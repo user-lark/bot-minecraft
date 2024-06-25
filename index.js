@@ -169,6 +169,11 @@ function createBot() {
     setTimeout(createBot, 5000); // Reconnect after 5 seconds
   });
 
+  const actions = {
+    commands: ['forward', 'back', 'left', 'right'],
+    holdDuration: 1000 // Durasi tahan perintah dalam milidetik
+  };
+
   function performAction() {
     if (isStationary) return;
     const command = actions.commands[Math.floor(Math.random() * actions.commands.length)];
