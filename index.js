@@ -112,7 +112,11 @@ bot.on('chat', (username, message) => {
     stopGuarding()
   }
 })
-
+	"action": {
+		"commands": ["forward", "back", "left", "right", "jump"],
+		"holdDuration": 5000,
+		"retryDelay": 15000
+	}
 bot.on('kicked', console.log)
 bot.on('error', console.log)
 bot.on('end', createBot)
