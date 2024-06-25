@@ -30,6 +30,15 @@ function createBot() {
   bot.loadPlugin(armorManager);
   bot.loadPlugin(pathfinder);
 
+  // Kirim ping ke server secara berkala
+  setInterval(() => {
+    if (bot && bot.connected) {
+      bot.tabComplete('', (err, tabComplete) => {
+        if (err) console.error('Error pinging server:', err);
+      });
+    }
+  }, 60000); // Setiap 60 detik (1 menit)
+
   bot.on('playerCollect', (collector, itemDrop) => {
     if (collector !== bot.entity) return;
 
