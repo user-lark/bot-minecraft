@@ -14,8 +14,8 @@ const discordHook = new Webhook('https://discord.com/api/webhooks/12561429524310
 
 app.use(express.json());
 
+const PORT = process.env.PORT || 3000; // Ganti dengan port yang Anda inginkan, atau gunakan variabel lingkungan jika tersedia
 app.get("/", (_, res) => res.sendFile(__dirname + "/index.html"));
-app.listen(process.env.PORT);
 
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.repl.co/`);
@@ -194,11 +194,3 @@ function createBot() {
 
 createBot();
 
-const PORT = process.env.PORT || 3000; // Ganti dengan port yang Anda inginkan, atau gunakan variabel lingkungan jika tersedia
-
-http.createServer((req, res) => {
-  res.write("Copy this link and add it to your Uptime system!");
-  res.end();
-}).listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
