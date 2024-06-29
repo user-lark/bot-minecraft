@@ -14,18 +14,21 @@ const discordHook = new Webhook('https://discord.com/api/webhooks/12561429524310
 
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000; // Ganti dengan port yang Anda inginkan, atau gunakan variabel lingkungan jika tersedia
 app.get("/", (_, res) => res.sendFile(__dirname + "/index.html"));
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server is running on port ${process.env.PORT || 3000}`);
+});
 
-setInterval(() => {
-  http.get(`http://${process.env.PROJECT_DOMAIN}.repl.co/`);
-}, 224000);
+// Uptime endpoint for Koyeb
+app.get("/uptime", (_, res) => {
+  res.sendStatus(200);
+});
 
 function createBot() {
   const bot = mineflayer.createBot({
     host: 'tirto.aternos.me',
     version: false, // U can replace with 1.16.5 for example, remember to use ', = '1.16.5'
-    username: 'Tirtobot',
+    username: 'Tirtobot2',
     port: 23621,
     plugins: [AutoAuth],
     AutoAuth: 'bot112022'
@@ -190,7 +193,22 @@ function createBot() {
     logger.error("Bot disconnected. Attempting to reconnect in 10 seconds...");
     setTimeout(createBot, 10000); // Retry connecting after 10 seconds
   });
+
+  // Pesan-pesan acak yang akan dikirim oleh bot
+  const randomMessages = [
+    "Halo semua!",
+    "Ada yang mau main?",
+    "Lagi ngapain nih?",
+    "Siapa yang sudah punya diamond?",
+    "Ayo kita petualangan!"
+  ];
+
+  // Kirim pesan acak setiap 240 detik (4 menit)
+  setInterval(() => {
+    const randomIndex = Math.floor(Math.random() * randomMessages.length);
+    const message = randomMessages[randomIndex];
+    bot.chat(message);
+  }, 240000); // 240000 milidetik = 240 detik = 4 menit
 }
 
 createBot();
-
