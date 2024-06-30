@@ -208,7 +208,8 @@ function createBot() {
     "Ada yang mau main?",
     "Lagi ngapain nih?",
     "Siapa yang sudah punya diamond?",
-    "Ayo kita petualangan!"
+    "Ayo kita petualangan!",
+    "Bot Dibuat oleh Axell"
   ];
 
   // Kirim pesan acak setiap 240 detik (4 menit)
@@ -217,17 +218,17 @@ function createBot() {
     const message = randomMessages[randomIndex];
     bot.chat(message);
   }, 240000); // 240000 milidetik = 240 detik = 4 menit
-}
 
-function preventAFK() {
-  setInterval(() => {
-    bot.setControlState('jump', true);
-    setTimeout(() => bot.setControlState('jump', false), 1000); // Loncat setiap 1 detik
+  function preventAFK() {
+    setInterval(() => {
+      bot.setControlState('jump', true);
+      setTimeout(() => bot.setControlState('jump', false), 1000); // Loncat setiap 1 detik
 
-    // Jalan dalam lingkaran kecil setiap 30 detik
-    const circleRadius = 3;
-    bot.lookAt(bot.entity.position.offset(Math.cos(Date.now() / 1000) * circleRadius, 0, Math.sin(Date.now() / 1000) * circleRadius));
-  }, 30000);
+      // Jalan dalam lingkaran kecil setiap 30 detik
+      const circleRadius = 3;
+      bot.lookAt(bot.entity.position.offset(Math.cos(Date.now() / 1000) * circleRadius, 0, Math.sin(Date.now() / 1000) * circleRadius));
+    }, 30000);
+  }
 }
 
 createBot();
