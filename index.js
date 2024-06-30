@@ -31,7 +31,7 @@ function createBot() {
     username: 'Tirtobot',
     port: 23621,
     plugins: [AutoAuth],
-    AutoAuth: 'bot112022'
+    AutoAuth: 'Şifre'
   });
 
   bot.loadPlugin(pvp);
@@ -134,6 +134,7 @@ function createBot() {
 
   bot.once('spawn', () => {
     logger.info("Bot has joined the server!");
+    preventAFK();
   });
 
   bot.on('chat', (username, message) => {
@@ -167,6 +168,10 @@ function createBot() {
       // Anda bisa menambahkan logika lain jika diperlukan
     } else {
       logger.warn(`Bot died and respawned at position: ${bot.entity.position}`);
+      setTimeout(() => {
+        logger.info('Respawning bot...');
+        createBot();
+      }, 10000); // Contoh: coba reconnect setelah 10 detik
     }
   });
 
@@ -175,9 +180,12 @@ function createBot() {
     const kickReason = reasonText.replace(/§./g, '');
     logger.warn(`Bot was kicked from the server. Reason: ${kickReason}`);
 
-    // Cek apakah alasan kick adalah timeout atau idle
+    if (kickReason.includes('Banned')) {
+      logger.error('Bot was banned from the server.');
+      return; // Jangan reconnect jika bot diban
+    }
+
     if (kickReason.includes('Timed out') || kickReason.includes('Idle')) {
-      // Jika alasan kick adalah timeout atau idle, coba reconnect setelah beberapa waktu
       setTimeout(() => {
         logger.info('Attempting to reconnect...');
         createBot();
@@ -209,6 +217,17 @@ function createBot() {
     const message = randomMessages[randomIndex];
     bot.chat(message);
   }, 240000); // 240000 milidetik = 240 detik = 4 menit
+}
+
+function preventAFK() {
+  setInterval(() => {
+    bot.setControlState('jump', true);
+    setTimeout(() => bot.setControlState('jump', false), 1000); // Loncat setiap 1 detik
+
+    // Jalan dalam lingkaran kecil setiap 30 detik
+    const circleRadius = 3;
+    bot.lookAt(bot.entity.position.offset(Math.cos(Date.now() / 1000) * circleRadius, 0, Math.sin(Date.now() / 1000) * circleRadius));
+  }, 30000);
 }
 
 createBot();
